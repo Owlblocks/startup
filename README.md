@@ -9,3 +9,4 @@ Features:
 - View your own GIFs and your friends'
 - Pin certain friends' pages to your hotbar
 - Favorite GIFs to your favorites page
+![mockup](ninjamock.png)
