@@ -2,9 +2,8 @@
 CS 260 Web Programming Project.
 ------------------------
 IP: 3.18.32.241
-Domain: baobab-gifs.click
 ---------------------
-Baobab
+Baobab (baobab-gifs.click)
 Baobab is a website for hosting GIFs. It's similar to Giphy, but with a focus on sharing GIFs with friends rather than uploading them for strangers.
 Features:
 - Upload GIFs to the website
