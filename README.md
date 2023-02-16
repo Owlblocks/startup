@@ -1,6 +1,8 @@
 # startup
 CS 260 Web Programming Project.
 ------------------------
+IP: 3.18.32.241
+---------------------
 Baobab
 Baobab is a website for hosting GIFs. It's similar to Giphy, but with a focus on sharing GIFs with friends rather than uploading them for strangers.
 Features:
