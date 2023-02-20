@@ -13,3 +13,7 @@ Features:
 - Pin certain friends' pages to your hotbar
 - Favorite GIFs to your favorites page
 ![mockup](ninjamock.png)
+
+Notes:
+Simon HTML:
+- A lot of what I learned concerned the basics of how svg images work. By the time I typed out the code, I understood, basically, what the vectors meant
