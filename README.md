@@ -17,3 +17,5 @@ Features:
 Notes:
 Simon HTML:
 - A lot of what I learned concerned the basics of how svg images work. By the time I typed out the code, I understood, basically, what the vectors meant
+Simon CSS:
+- With the Bootstrap framework, so much of what I had to change was in the HTML. A lot more than I'd anticipated.
