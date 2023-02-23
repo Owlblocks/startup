@@ -32,3 +32,13 @@ main {
     flex: 1;
 }
 
+.favorite {
+    background-color: transparent;
+    border: 0px;
+    position:absolute;
+}
+
+.gif {
+    display: inline;
+    position: relative;
+}
