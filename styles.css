@@ -71,3 +71,25 @@ main {
 .secondary-link:hover {
     color: lime;
 }
+
+.option {
+    padding-top: 15px;
+}
+
+.btn-baobab {
+    background-color: lime !important;
+    border-color: darkgreen !important;
+}
+
+.btn-baobab:hover {
+    background-color: green !important;
+}
+
+.btn-baobab:active {
+    background-color: darkgreen !important;
+}
+
+.btn-baobab:disabled {
+    background-color: beige !important;
+    border-color: tan !important;
+}
