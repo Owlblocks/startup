@@ -23,6 +23,11 @@ main {
 .profile {
     display: flex;
     flex-direction: row;
+    padding-top: 5px;
+}
+
+.profile-inner {
+    padding: 5px;
 }
 
 .container {
@@ -36,6 +41,10 @@ main {
     background-color: transparent;
     border: 0px;
     position:absolute;
+}
+
+.nav-item {
+    padding-bottom: 5px;
 }
 
 .gif {
