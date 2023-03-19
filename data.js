@@ -66,7 +66,7 @@ class Data {
         btn.classList.add('favorite');
         btn.onclick = function() {data.toggleFavorite(gifElem)};
         let btnImg = document.createElement('img');
-        btnImg.src = 'empty_star.png';
+        btnImg.src = this.favorites.has(gif.id) ? 'full_star.png' : 'empty_star.png';
         btn.appendChild(btnImg);
         gifElem.appendChild(btn);
         let gifImg = document.createElement('img');
@@ -91,13 +91,22 @@ class Data {
         return this.gifs.get(elem);
     }
 
+    getFavoriteButtonImage(elem) {
+        elem = elem.querySelector('button');
+        elem = elem.querySelector('img');
+        return elem;
+    }
+
     toggleFavorite(elem) {
         let gif = this.getGIFFromElem(elem).id;
+        let img = this.getFavoriteButtonImage(elem);
         if(this.favorites.has(gif)) {
             this.favorites.delete(gif);
+            img.src = 'empty_star.png';
         }
         else {
             this.favorites.add(gif);
+            img.src = 'full_star.png';
         }
 
         localStorage.setItem('favorites', JSON.stringify([...this.favorites]));
