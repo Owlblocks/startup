@@ -27,11 +27,13 @@ class Data {
     gifs;
     favorites;
     users;
+    pinned;
 
     constructor() {
         this.gifs = new Map();
         this.favorites = new Set();
         this.users = new Map();
+        this.pinned = new Set();
         this.loadData();
         if(this.gifs.size < 1) {
             this.sampleGifs();
@@ -51,6 +53,10 @@ class Data {
         let users = JSON.parse(localStorage.getItem('users'));
         if(users) {
             this.users = new Map(users);
+        }
+        let pinned = JSON.parse(localStorage.getItem('pinned'));
+        if(pinned) {
+            this.pinned = new Set(pinned);
         }
     }
 
@@ -78,12 +84,57 @@ class Data {
         return gifElem;
     }
 
+    createPinnedElem(name) {
+        let elem = document.createElement('li');
+        elem.classList.add('nav-item');
+        let avatar = document.createElement('img');
+        avatar.style.height = '30px';
+        avatar.src = 'account.png';
+        elem.appendChild(avatar);
+        let link = document.createElement('a');
+        link.classList.add('secondary-link');
+        link.href = 'user.html';
+        link.textContent = name;
+        link.style.paddingLeft = '10px';
+        elem.appendChild(link);
+
+        return elem;
+    }
+
+    createFriendElem(friend) {
+        let elem = document.createElement('li');
+        elem.classList.add('nav-item');
+        let avatar = document.createElement('img');
+        avatar.style.height = '30px';
+        avatar.src = 'account.png';
+        elem.appendChild(avatar);
+        if(this.pinned.has(friend.name)) {
+            let pin = document.createElement('img');
+            pin.style.height = '30px';
+            pin.src = 'pin.png';
+            elem.appendChild(pin);
+        }
+        let link = document.createElement('a');
+        link.classList.add('secondary-link');
+        link.href = 'user.html';
+        link.textContent = friend.name;
+        link.style.paddingLeft = '10px';
+        elem.appendChild(link);
+
+        return elem;
+    }
+
     sampleGifs() {
         this.addUser('Tom');
         this.addUser('Dick');
         this.addUser('Sally');
+
+        this.pinned.add('Dick');
+        this.pinned.add('Sally');
+
         this.users.get('Tom').addGIF('sample/fizzidyuk.gif');
         this.users.get('Tom').addGIF('sample/jeepers.gif');
+
         localStorage.setItem('users', JSON.stringify([...this.users]));
     }
 
@@ -114,15 +165,31 @@ class Data {
 }
 
 const data = new Data();
+
 let favorites = document.getElementsByName('favorites')[0];
 if(favorites) {
     for(const id of data.favorites) {
         favorites.appendChild(data.createGifElem(data.getGIFFromID(id)));
     }
 }
+
 let userGifs = document.getElementsByName('userpage')[0];
 if(userGifs) {
     for(const gif of data.users.get('Tom').gifs.values()) {
         userGifs.appendChild(data.createGifElem(gif));
+    }
+}
+
+let pinnedFriends = document.getElementsByName('pinned-friends')[0];
+if(pinnedFriends) {
+    for(const name of data.pinned) {
+        pinnedFriends.appendChild(data.createPinnedElem(name));
+    }
+}
+
+let friendList = document.getElementsByName('friend-list')[0];
+if(friendList) {
+    for(const friend of data.users.values()) {
+        friendList.appendChild(data.createFriendElem(friend));
     }
 }
