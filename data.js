@@ -26,13 +26,18 @@ class User {
 class Data {
     gifs;
     favorites;
+
     users;
+    friends;
     pinned;
+
+    username;
 
     constructor() {
         this.gifs = new Map();
         this.favorites = new Set();
         this.users = new Map();
+        this.friends = new Set();
         this.pinned = new Set();
         this.loadData();
         if(this.gifs.size < 1) {
@@ -53,6 +58,10 @@ class Data {
         let users = JSON.parse(localStorage.getItem('users'));
         if(users) {
             this.users = new Map(users);
+        }
+        let friends = JSON.parse(localStorage.getItem('friends'));
+        if(friends) {
+            this.friends = new Set(friends);
         }
         let pinned = JSON.parse(localStorage.getItem('pinned'));
         if(pinned) {
@@ -102,6 +111,7 @@ class Data {
     }
 
     createFriendElem(friend) {
+        friend = this.users.get(friend);
         let elem = document.createElement('li');
         elem.classList.add('nav-item');
         let avatar = document.createElement('img');
@@ -128,6 +138,14 @@ class Data {
         this.addUser('Tom');
         this.addUser('Dick');
         this.addUser('Sally');
+        
+        this.username = 'Tom';
+
+        for(const user of this.users.values()) {
+            if(user.name === this.username)
+                continue;
+            this.friends.add(user.name);
+        }
 
         this.pinned.add('Dick');
         this.pinned.add('Sally');
@@ -199,7 +217,12 @@ if(userGifs) {
 
 let friendList = document.getElementById('friend-list');
 if(friendList) {
-    for(const friend of data.users.values()) {
+    for(const friend of data.friends) {
         friendList.appendChild(data.createFriendElem(friend));
     }
+}
+
+let username = document.getElementById('username');
+if(username) {
+    username.textContent = data.username;
 }
