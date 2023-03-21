@@ -180,7 +180,7 @@ if(userGifs) {
     }
 }
 
-let pinnedFriends = document.getElementsByName('pinned-friends')[0];
+let pinnedFriends = document.getElementById('pinned-friends');
 if(pinnedFriends) {
     for(const name of data.pinned) {
         pinnedFriends.appendChild(data.createPinnedElem(name));
