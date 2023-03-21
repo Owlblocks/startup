@@ -46,12 +46,11 @@
         </header>
         <main class="container">
             <div class="option">
-                <button class="btn btn-baobab">
-                    Choose File
-                </button>
+                <input type="file" id="fileinput" name="filename" accept="image/gif" />
             </div>
             <div class="option">
-                <label>Preview</label>
+                <label>Preview:</label>
+                <img id="preview" style="height:300px"/>
             </div>
             <div class="option">
                 <button class="btn btn-baobab" disabled="true">
@@ -61,5 +60,6 @@
         </main>
 
         <script src="data.js"></script>
+        <script src="upload.js"></script>
     </body>
 </html>
