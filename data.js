@@ -102,7 +102,7 @@ class Data {
         elem.appendChild(avatar);
         let link = document.createElement('a');
         link.classList.add('secondary-link');
-        link.href = 'user.html';
+        link.href = `user.html?user=${name}`;
         link.textContent = name;
         link.style.paddingLeft = '10px';
         elem.appendChild(link);
@@ -110,15 +110,14 @@ class Data {
         return elem;
     }
 
-    createFriendElem(friend) {
-        friend = this.users.get(friend);
+    createFriendElem(name) {
         let elem = document.createElement('li');
         elem.classList.add('nav-item');
         let avatar = document.createElement('img');
         avatar.style.height = '30px';
         avatar.src = 'account.png';
         elem.appendChild(avatar);
-        if(this.pinned.has(friend.name)) {
+        if(this.pinned.has(name)) {
             let pin = document.createElement('img');
             pin.style.height = '30px';
             pin.src = 'pin.png';
@@ -126,8 +125,8 @@ class Data {
         }
         let link = document.createElement('a');
         link.classList.add('secondary-link');
-        link.href = 'user.html';
-        link.textContent = friend.name;
+        link.href = `user.html?user=${name}`;
+        link.textContent = name;
         link.style.paddingLeft = '10px';
         elem.appendChild(link);
 
@@ -152,6 +151,7 @@ class Data {
 
         this.users.get('Tom').addGIF('sample/fizzidyuk.gif');
         this.users.get('Tom').addGIF('sample/jeepers.gif');
+        this.users.get('Sally').addGIF('sample/the_only_sane_person.gif');
 
         localStorage.setItem('users', JSON.stringify([...this.users]));
     }
@@ -208,9 +208,15 @@ data.rebuildFavorites();
 
 data.rebuildPinnedFriends();
 
+const params = new URLSearchParams(document.location.search);
+let userpage = params.get('user');
+if(!userpage) {
+    userpage = data.username;
+}
+
 let userGifs = document.getElementById('userpage');
 if(userGifs) {
-    for(const gif of data.users.get('Tom').gifs.values()) {
+    for(const gif of data.users.get(userpage).gifs.values()) {
         userGifs.appendChild(data.createGifElem(gif));
     }
 }
