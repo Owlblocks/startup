@@ -161,29 +161,39 @@ class Data {
         }
 
         localStorage.setItem('favorites', JSON.stringify([...this.favorites]));
+        this.rebuildFavorites();
+    }
+
+    rebuildFavorites() {
+        let favorites = document.getElementById('favorites');
+        if(favorites) {
+            favorites.innerHTML = '';
+            for(const id of this.favorites) {
+                favorites.appendChild(this.createGifElem(this.getGIFFromID(id)));
+            }
+        }
+    }
+
+    rebuildPinnedFriends() {
+        let pinnedFriends = document.getElementById('pinned-friends');
+        if(pinnedFriends) {
+            for(const name of this.pinned) {
+                pinnedFriends.appendChild(this.createPinnedElem(name));
+            }
+        }
     }
 }
 
 const data = new Data();
 
-let favorites = document.getElementById('favorites');
-if(favorites) {
-    for(const id of data.favorites) {
-        favorites.appendChild(data.createGifElem(data.getGIFFromID(id)));
-    }
-}
+data.rebuildFavorites();
+
+data.rebuildPinnedFriends();
 
 let userGifs = document.getElementById('userpage');
 if(userGifs) {
     for(const gif of data.users.get('Tom').gifs.values()) {
         userGifs.appendChild(data.createGifElem(gif));
-    }
-}
-
-let pinnedFriends = document.getElementById('pinned-friends');
-if(pinnedFriends) {
-    for(const name of data.pinned) {
-        pinnedFriends.appendChild(data.createPinnedElem(name));
     }
 }
 
