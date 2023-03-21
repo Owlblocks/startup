@@ -166,14 +166,14 @@ class Data {
 
 const data = new Data();
 
-let favorites = document.getElementsByName('favorites')[0];
+let favorites = document.getElementById('favorites');
 if(favorites) {
     for(const id of data.favorites) {
         favorites.appendChild(data.createGifElem(data.getGIFFromID(id)));
     }
 }
 
-let userGifs = document.getElementsByName('userpage')[0];
+let userGifs = document.getElementById('userpage');
 if(userGifs) {
     for(const gif of data.users.get('Tom').gifs.values()) {
         userGifs.appendChild(data.createGifElem(gif));
@@ -187,7 +187,7 @@ if(pinnedFriends) {
     }
 }
 
-let friendList = document.getElementsByName('friend-list')[0];
+let friendList = document.getElementById('friend-list');
 if(friendList) {
     for(const friend of data.users.values()) {
         friendList.appendChild(data.createFriendElem(friend));
