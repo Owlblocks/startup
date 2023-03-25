@@ -1,0 +1,23 @@
+{
+  "name": "startup",
+  "version": "1.0.0",
+  "description": "CS 260 Web Programming Project.\r ------------------------\r IP: 3.18.32.241\r ---------------------\r Baobab (baobab-gifs.click)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Owlblocks/startup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Owlblocks/startup/issues"
+  },
+  "homepage": "https://github.com/Owlblocks/startup#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
