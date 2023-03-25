@@ -1,5 +1,6 @@
 const preview = document.getElementById('preview');
 const button = document.getElementById('upload')
+const fileInput = document.getElementById('fileinput');
 
 let file = {};
 
@@ -10,6 +11,13 @@ function onFileChanged(event) {
     let fr = new FileReader();
     fr.onload = function(event) { preview.src = event.target.result; button.disabled = false; };
     fr.readAsDataURL(file);
+}
+
+function reset() {
+    preview.src = '';
+    preview.alt = 'File uploaded successfully!';
+    fileInput.value = '';
+    button.disabled = true;
 }
 
 function onUploadClicked(event) {
@@ -23,12 +31,9 @@ function onUploadClicked(event) {
             'Content-Type': 'multipart/form-data'
         }*/
     })
-        .then((res) => console.log(res))
+        .then((res) => reset())
         .catch((err) => ("Error", err));
 }
 
-let fileInput = document.getElementById('fileinput');
-if(fileInput) {
-    fileInput.addEventListener('change', onFileChanged);
-}
+fileInput.addEventListener('change', onFileChanged);
 button.addEventListener('click', onUploadClicked);
