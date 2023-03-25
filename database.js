@@ -12,6 +12,7 @@ const url = `mongodb+srv://${userName}:${password}@${hostname}`;
 
 const client = new MongoClient(url);
 const userCollection = client.db('baobab').collection('users');
+const gifCollection = client.db('baobab').collection('gifs');
 
 function getUser(name) {
     const query = {username: name};
@@ -22,4 +23,10 @@ function getUser(name) {
     return res.toArray();
 }
 
-module.exports = {getUser};
+function addGIF(username, filename) {
+  let gif = {username: username, filename: filename};
+  gifCollection.insertOne(gif);
+  return gif;
+}
+
+module.exports = {getUser, addGIF};
