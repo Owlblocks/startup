@@ -93,3 +93,8 @@ main {
     background-color: beige !important;
     border-color: tan !important;
 }
+
+.login {
+    display: grid;
+    grid-template-columns: auto auto;
+}

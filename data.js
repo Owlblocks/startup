@@ -136,6 +136,7 @@ class Data {
     sampleGifs() {
         this.addUser('Tom');
         this.addUser('Dick');
+        this.addUser('Harry')
         this.addUser('Sally');
         
         this.username = 'Tom';
