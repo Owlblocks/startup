@@ -1,6 +1,14 @@
 const express = require('express');
 const multer = require('multer');
-const gifUpload = multer({dest: './data/gifs/'});
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './data/gifs/')
+    },
+    filename: function(req, file, cb) {
+        cb(null, Date.now() + '.gif')
+    }
+});
+const gifUpload = multer({storage: storage});
 const cors = require('cors');
 //const uuid = require('uuid');
 const app = express();
@@ -11,6 +19,8 @@ const port = process.argv.length > 2 ? process.argv[2] : 4000;
 app.use(express.json());
 
 app.use(express.static('public'));
+
+app.use('/data', express.static('data'))
 
 app.use(cors({
     origin: '*'
@@ -33,6 +43,12 @@ apiRouter.post('/upload/gif', gifUpload.single('gif'), function(req, res, next) 
     const gif = DB.addGIF(username, filename);
     res.send(gif);
     next();
+});
+
+apiRouter.get('/gif/:id', async (_req, res) => {
+    let id = _req.params.id;
+    let file = new File({fileName: `data/gifs/${id}`});
+    res.send();
 });
 
 app.listen(port);
