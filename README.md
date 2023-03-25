@@ -29,3 +29,8 @@ Simon Javascript:
 Simon Service:
 - I learned primarily just how simple the basics of a service is when you're relying on JSON and node.js. So much of what I did in CS 240 with services relied on creating Java classes for the different endpoints. I'm sure a project like that would be more elaborate than this basic Simon service, but it still blows me away just how simple this is (to the point that I'm not sure what else I learned that isn't just a single line of code).
 - In terms of single lines of code, making sure to serve the primary content of your website statically is important to remember.
+
+Simon DB:
+- I learned to be wary of my apartments Wifi, as it became slow to the point of nonfunction while I was bugtesting my MongoDB access 10 minutes before the deadline
+- I learned that MongoDB needed to be updated to accept any IP address
+- I learned how MongoDB has both databases and collections to organize data
