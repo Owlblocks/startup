@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
-app.use('/data', express.static('data'))
+app.use('/data', express.static('data'));
 
 app.use(cors({
     origin: '*'
