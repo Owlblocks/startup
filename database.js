@@ -1,4 +1,6 @@
 const {MongoClient} = require('mongodb');
+const bcrypt = require('bcrypt');
+const uuid = require('uuid');
 
 const userName = process.env.MONGOUSER;
 const password = process.env.MONGOPASSWORD;
@@ -15,12 +17,11 @@ const userCollection = client.db('baobab').collection('users');
 const gifCollection = client.db('baobab').collection('gifs');
 
 function getUser(name) {
-    const query = {username: name};
-    options = {
-        limit: 10,
-    };
-    const res = userCollection.find(query, options);
-    return res.toArray();
+    return userCollection.findOne({userName: name});
+}
+
+function getUserByToken(token) {
+  return userCollection.findOne({token: token});
 }
 
 function addGIF(username, filename) {
@@ -29,4 +30,17 @@ function addGIF(username, filename) {
   return gif;
 }
 
-module.exports = {getUser, addGIF};
+async function registerAccount(username, password) {
+  const passwordHash = bcrypt(password, 10);
+
+  const user = {
+    username: username,
+    passwordHash: passwordHash,
+    token: uuid.v4()
+  };
+  await userCollection.insertOne(user);
+
+  return user;
+}
+
+module.exports = {getUser, addGIF, registerAccount, getUserByToken};
