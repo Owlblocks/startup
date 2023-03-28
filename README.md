@@ -34,3 +34,8 @@ Simon DB:
 - I learned to be wary of my apartments Wifi, as it became slow to the point of nonfunction while I was bugtesting my MongoDB access 10 minutes before the deadline
 - I learned that MongoDB needed to be updated to accept any IP address
 - I learned how MongoDB has both databases and collections to organize data
+
+Simon Login:
+- I feel like I remember a token being generated each login session when working with an API before. Am I remembering that wrong? If that's common, what are the costs of having a per-token user? Does it essentially act as a password that can be stored entirely and passed around without endangering the user's passwords on different sites?
+- I learned a bit how cookies work.
+- I figured out that I need to decide whether my Startup service will have a single Users collection, with account info and user info, or if I should separate a user's favorites and uploaded gifs (not the gifs themselves) from their password hash and token.
