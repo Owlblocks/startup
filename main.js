@@ -69,6 +69,18 @@ apiRouter.post('/auth/logout', (_req, res) => {
     res.status(204).end();
 });
 
+apiRouter.get('/auth/ping', async (req, res) => {
+    console.log('ping');
+    authToken = req.cookies[authCookieName];
+    const user = await DB.getUserByToken(authToken);
+    if(user) {
+        res.send({username: user.username});
+    }
+    else {
+        res.send({username: ''});
+    }
+})
+
 apiRouter.post('/upload/gif', gifUpload.single('gif'), function(req, res, next) {
 //    console.log('upload');
     let filename = req.file.filename;

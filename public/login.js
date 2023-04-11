@@ -8,8 +8,12 @@ function login(username, password) {
                 'Content-Type': 'application/json'
             }})
         .then((res => {
-            console.log(res);
-            console.log('logged in');
+            if(res.ok) {
+                console.log('Logged in Successfully');
+            }
+            else {
+                console.log('Login Failed');
+            }
         }))
         .catch((err) => ("Error", err))
 }
