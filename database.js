@@ -17,7 +17,7 @@ const userCollection = client.db('baobab').collection('users');
 const gifCollection = client.db('baobab').collection('gifs');
 
 function getUser(name) {
-    return userCollection.findOne({userName: name});
+    return userCollection.findOne({username: name});
 }
 
 function getUserByToken(token) {
@@ -31,7 +31,7 @@ function addGIF(username, filename) {
 }
 
 async function registerAccount(username, password) {
-  const passwordHash = bcrypt(password, 10);
+  const passwordHash = await bcrypt.hash(password, 10);
 
   const user = {
     username: username,

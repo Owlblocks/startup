@@ -52,26 +52,21 @@ apiRouter.post('/auth/register', async (req, res) => {
 apiRouter.post('/auth/login', async (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
+
     const user = await DB.getUser(username);
     if(user) {
         if(await bcrypt.compare(password, user.passwordHash)) {
-            SetAuthCookie(res, user.token);
+            setAuthCookie(res, user.token);
             res.send({id: user._id});
             return;
         }
     }
-    res.status(401).send('Unauthorized');
+    res.status(401).send({msg: 'Login Failed'});
 });
 
 apiRouter.post('/auth/logout', (_req, res) => {
     res.clearCookie(authCookieName);
     res.status(204).end();
-});
-
-apiRouter.get('/user/:username', async (_req, res) => {
-    let name = _req.params.username;
-    let str = await DB.getUser(name);
-    res.send(str);
 });
 
 apiRouter.post('/upload/gif', gifUpload.single('gif'), function(req, res, next) {
@@ -86,23 +81,42 @@ apiRouter.post('/upload/gif', gifUpload.single('gif'), function(req, res, next) 
 
 apiRouter.get('/gif/:id', async (_req, res) => {
     let id = _req.params.id;
-    let file = new File({fileName: `data/gifs/${id}`});
-    res.send();
+    res.sendFile(`data/gifs/${id}`, {root: __dirname});
 });
 
 const secureApiRouter = express.Router();
 apiRouter.use(secureApiRouter);
 
 secureApiRouter.use(async (req, res, next) => {
+    console.log('sec');
     authToken = req.cookies[authCookieName];
     const user = await DB.getUserByToken(authToken);
     if(user) {
+        console.log(user);
         next();
     }
     else {
         res.status(401).send({msg: 'Unauthorized'});
     }
 });
+
+secureApiRouter.get('/user/:username', async (_req, res) => {
+    let name = _req.params.username;
+    let str = await DB.getUser(name);
+    res.send(str);
+});
+/*
+app.use(async (req, res) => {
+    let authToken = req.cookies[authCookieName];
+    const user = await DB.getUserByToken(authToken);
+    if(user) {
+        res.sendFile('index.html', {root: 'public'});
+    }
+    else {
+        res.sendFile('login.html', {root: 'public'})
+    }
+});
+*/
 
 function setAuthCookie(res, authToken) {
     res.cookie(authCookieName, authToken, {
