@@ -1,4 +1,4 @@
-const registerBtn = document.getElementById('login-btn');
+const registerBtn = document.getElementById('register-btn');
 const usernameField = document.getElementById('username-field');
 const passwordField = document.getElementById('password-field');
 const confirmField = document.getElementById('confirm-field');
@@ -37,4 +37,4 @@ function onTextChanged() {
 }
 
 registerBtn.onclick = () => {register(usernameField.value, passwordField.value)};
-usernameField.onchange, passwordField.onchange = onTextChanged;
+usernameField.onchange, passwordField.onchange, confirmField.onchange = onTextChanged;

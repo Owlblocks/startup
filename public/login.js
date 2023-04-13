@@ -1,3 +1,6 @@
+const registerBtn = document.getElementById('login-btn');
+const usernameField = document.getElementById('username-field');
+const passwordField = document.getElementById('password-field');
 
 function login(username, password) {
     let body = {username: username, password: password};
@@ -18,10 +21,6 @@ function login(username, password) {
         }))
         .catch((err) => ("Error", err))
 }
-
-const registerBtn = document.getElementById('login-btn');
-const usernameField = document.getElementById('username-field');
-const passwordField = document.getElementById('password-field');
 
 function onTextChanged() {
     registerBtn.disabled = (!usernameField.value || !passwordField.value);
