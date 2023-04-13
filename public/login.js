@@ -10,6 +10,7 @@ function login(username, password) {
         .then((res => {
             if(res.ok) {
                 console.log('Logged in Successfully');
+                location.assign('index.html');
             }
             else {
                 console.log('Login Failed');
@@ -18,13 +19,13 @@ function login(username, password) {
         .catch((err) => ("Error", err))
 }
 
-const loginBtn = document.getElementById('login-btn');
+const registerBtn = document.getElementById('login-btn');
 const usernameField = document.getElementById('username-field');
 const passwordField = document.getElementById('password-field');
 
 function onTextChanged() {
-    loginBtn.disabled = (!usernameField.value || !passwordField.value);
+    registerBtn.disabled = (!usernameField.value || !passwordField.value);
 }
 
-loginBtn.onclick = () => {login(usernameField.value, passwordField.value)};
+registerBtn.onclick = () => {login(usernameField.value, passwordField.value)};
 usernameField.onchange, passwordField.onchange = onTextChanged;
