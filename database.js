@@ -26,8 +26,34 @@ function getUserByToken(token) {
 
 function addGIF(username, filename) {
   let gif = {username: username, filename: filename};
+  let user = {username: username};
   gifCollection.insertOne(gif);
+  userCollection.updateOne(user, { $addToSet: { 'gifs': filename } })
   return gif;
+}
+
+function addFriend(username, friendname) {
+  userCollection.updateOne(
+    {username: username},
+    {$addToSet: { 'friends': friendname }});
+}
+
+function pinFriend(username, friendname) {
+  userCollection.updateOne(
+    {username: username},
+    {$addToSet: { 'pinned': friendname }});
+}
+
+async function toggleFavorite(username, gif) {
+  let filter = {username: username};
+  let user = await userCollection.findOne(filter);
+  if((user.favorites ?? []).includes(gif)) {
+    await userCollection.updateOne(filter, { $pull: { 'favorites': gif } });
+  }
+  else {
+    await userCollection.updateOne(filter, { $addToSet: { 'favorites': gif } });
+  }
+  return await userCollection.findOne(filter);
 }
 
 async function registerAccount(username, password) {
@@ -43,4 +69,4 @@ async function registerAccount(username, password) {
   return user;
 }
 
-module.exports = {getUser, addGIF, registerAccount, getUserByToken};
+module.exports = {getUser, addGIF, addFriend, pinFriend, toggleFavorite, registerAccount, getUserByToken};

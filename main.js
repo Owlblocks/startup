@@ -96,6 +96,26 @@ apiRouter.get('/gif/:id', async (_req, res) => {
     res.sendFile(`data/gifs/${id}`, {root: __dirname});
 });
 
+apiRouter.post('/user/:username/addfriend/:friendname', async (req, res) => {
+    let username = req.params.username;
+    let friendname = req.params.friendname;
+    DB.addFriend(username, friendname);
+    DB.addFriend(friendname, username);
+});
+
+apiRouter.post('/user/:username/pin/:friendname', async (req, res) => {
+    let username = req.params.username;
+    let friendname = req.params.friendname;
+    DB.pinFriend(username, friendname);
+});
+
+apiRouter.post('/user/:username/togglefavorite/:gif', async (req, res) => {
+    let username = req.params.username;
+    let gif = req.params.gif;
+    let ret = await DB.toggleFavorite(username, gif);
+    res.status(200).send(ret);
+})
+
 const secureApiRouter = express.Router();
 apiRouter.use(secureApiRouter);
 
@@ -104,7 +124,7 @@ secureApiRouter.use(async (req, res, next) => {
     authToken = req.cookies[authCookieName];
     const user = await DB.getUserByToken(authToken);
     if(user) {
-        console.log(user);
+        // console.log(user);
         next();
     }
     else {

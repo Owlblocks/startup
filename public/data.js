@@ -74,18 +74,19 @@ class Data {
         this.users.set(name, user);
     }
 
-    createGifElem(gif) {
+    createGifElem(gif, favorite) {
+        // console.log(favorite);
         let gifElem = document.createElement('div');
         gifElem.classList.add('gif');
         let btn = document.createElement('button');
         btn.classList.add('favorite');
         btn.onclick = function() {data.toggleFavorite(gifElem)};
         let btnImg = document.createElement('img');
-        btnImg.src = this.favorites.has(gif.id) ? 'full_star.png' : 'empty_star.png';
+        btnImg.src = favorite ? 'full_star.png' : 'empty_star.png';
         btn.appendChild(btnImg);
         gifElem.appendChild(btn);
         let gifImg = document.createElement('img');
-        gifImg.src = gif.src;
+        gifImg.src = `/data/gifs/${gif}`;
         gifImg.style = 'height:300px';
         gifElem.appendChild(gifImg);
 
@@ -168,35 +169,37 @@ class Data {
     }
 
     toggleFavorite(elem) {
-        let gif = this.getGIFFromElem(elem).id;
+        let gif = this.getGIFFromElem(elem);
         let img = this.getFavoriteButtonImage(elem);
-        if(this.favorites.has(gif)) {
-            this.favorites.delete(gif);
-            img.src = 'empty_star.png';
-        }
-        else {
-            this.favorites.add(gif);
-            img.src = 'full_star.png';
-        }
-
-        localStorage.setItem('favorites', JSON.stringify([...this.favorites]));
-        this.rebuildFavorites();
+        fetch(`/api/user/${this.username}/togglefavorite/${gif}`, {
+            method: 'POST'
+        }).then(async (res) => {
+            console.log(res);
+            let json = await res.json();
+            if(json.favorites.includes(gif)) {
+                img.src = 'full_star.png';
+            }
+            else {
+                img.src = 'empty_star.png';
+            }
+            this.rebuildFavorites(json.favorites);
+        });
     }
 
-    rebuildFavorites() {
-        let favorites = document.getElementById('favorites');
-        if(favorites) {
-            favorites.innerHTML = '';
-            for(const id of this.favorites) {
-                favorites.appendChild(this.createGifElem(this.getGIFFromID(id)));
+    rebuildFavorites(favorites) {
+        let favoriteElems = document.getElementById('favorites');
+        if(favoriteElems) {
+            favoriteElems.innerHTML = '';
+            for(const id of favorites) {
+                favoriteElems.appendChild(this.createGifElem(id, true));
             }
         }
     }
 
-    rebuildPinnedFriends() {
+    rebuildPinnedFriends(pinned) {
         let pinnedFriends = document.getElementById('pinned-friends');
         if(pinnedFriends) {
-            for(const name of this.pinned) {
+            for(const name of pinned) {
                 pinnedFriends.appendChild(this.createPinnedElem(name));
             }
         }
@@ -205,52 +208,68 @@ class Data {
 
 const data = new Data();
 
-function redirect() {
-    fetch('/api/auth/ping', {
+async function redirect() {
+    let res = await fetch('/api/auth/ping', {
         method: 'GET'
-    })
-    .then(async (res) => {
-        let json = await res.json();
-        if(json.username) {
-
-        }
-        else {
-            location.assign('login.html');
-        }
-    })
-    .catch((err) => {
-        console.log(err);
-    })
+    });
+    let json = await res.json();
+    if(json.username) {
+        data.username = json.username;
+    }
+    else {
+        location.assign('login.html');
+    }
     
 }
 
-redirect();
-
-data.rebuildFavorites();
-
-data.rebuildPinnedFriends();
-
-const params = new URLSearchParams(document.location.search);
-let userpage = params.get('user');
-if(!userpage) {
-    userpage = data.username;
-}
-
-let userGifs = document.getElementById('userpage');
-if(userGifs) {
-    for(const gif of data.users.get(userpage).gifs.values()) {
-        userGifs.appendChild(data.createGifElem(gif));
+redirect().then(() => {
+    let username = document.getElementById('username');
+    if(username) {
+        username.textContent = data.username;
     }
-}
 
-let friendList = document.getElementById('friend-list');
-if(friendList) {
-    for(const friend of data.friends) {
-        friendList.appendChild(data.createFriendElem(friend));
+    const params = new URLSearchParams(document.location.search);
+    let userpage = params.get('user');
+    if(!userpage) {
+        userpage = data.username;
     }
-}
+    let userGifs = document.getElementById('userpage');
+    let friendList = document.getElementById('friend-list');
 
-let username = document.getElementById('username');
-if(username) {
-    username.textContent = data.username;
-}
+    fetch(`/api/user/${data.username}`, {
+        method: 'GET'
+    }).then(async (res) => {
+        let json = await res.json();
+        json.friends ??= [];
+        json.pinned ??= [];
+        json.favorites ??= [];
+        if(friendList) {
+            for(const friend of json.friends) {
+                friendList.appendChild(data.createFriendElem(friend));
+            }
+        }
+
+        data.rebuildPinnedFriends(json.pinned);
+        data.rebuildFavorites(json.favorites);
+        if(userGifs) {
+            fetch(`/api/user/${userpage}`, {
+                method: 'GET'
+            }).then(async (res2) => {
+                let json2 = await res2.json();
+                json2.gifs ??= [];
+                
+                for(const gif of json2.gifs) {
+                    userGifs.appendChild(data.createGifElem(gif, json.favorites.includes(gif)));
+                }
+            });
+        }
+    });
+
+    
+});
+
+/*
+fetch('/api/user/owlblocks/pin/monti', {
+    method: 'POST'
+})
+*/
