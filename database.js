@@ -38,10 +38,16 @@ function addFriend(username, friendname) {
     {$addToSet: { 'friends': friendname }});
 }
 
-function pinFriend(username, friendname) {
-  userCollection.updateOne(
-    {username: username},
-    {$addToSet: { 'pinned': friendname }});
+async function togglePin(username, friendname) {
+  let filter = {username: username};
+  let user = await userCollection.findOne(filter);
+  if((user.pinned ?? []).includes(friendname)) {
+    await userCollection.updateOne(filter, { $pull: { 'pinned': friendname } });
+  }
+  else {
+    await userCollection.updateOne(filter, { $addToSet: { 'pinned': friendname } });
+  }
+  return await userCollection.findOne(filter);
 }
 
 async function toggleFavorite(username, gif) {
@@ -76,4 +82,4 @@ async function searchUsers(searchString) {
   return results.toArray();
 }
 
-module.exports = {getUser, addGIF, addFriend, pinFriend, searchUsers, toggleFavorite, registerAccount, getUserByToken};
+module.exports = {getUser, addGIF, addFriend, togglePin, searchUsers, toggleFavorite, registerAccount, getUserByToken};

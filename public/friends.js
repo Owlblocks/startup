@@ -30,6 +30,9 @@ function addFriend(name) {
 }
 
 function addSearchResult(user) {
+    if(user.username === username) {
+        return;
+    }
     let div = document.createElement('div');
     let label = document.createElement('label');
     let add = document.createElement('button');

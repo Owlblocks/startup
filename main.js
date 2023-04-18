@@ -108,11 +108,11 @@ apiRouter.post('/user/:username/addfriend/:friendname', async (req, res) => {
     });
 });
 
-apiRouter.post('/user/:username/pin/:friendname', async (req, res) => {
+apiRouter.post('/user/:username/togglepin/:friendname', async (req, res) => {
     let username = req.params.username;
     let friendname = req.params.friendname;
-    DB.pinFriend(username, friendname);
-    res.send('pinned');
+    let ret = await DB.togglePin(username, friendname);
+    res.status(200).send(ret);
 });
 
 apiRouter.post('/user/:username/togglefavorite/:gif', async (req, res) => {
