@@ -69,4 +69,11 @@ async function registerAccount(username, password) {
   return user;
 }
 
-module.exports = {getUser, addGIF, addFriend, pinFriend, toggleFavorite, registerAccount, getUserByToken};
+async function searchUsers(searchString) {
+  let search = new RegExp(searchString);
+  // console.log(searchString);
+  let results = await userCollection.find({username: search});
+  return results.toArray();
+}
+
+module.exports = {getUser, addGIF, addFriend, pinFriend, searchUsers, toggleFavorite, registerAccount, getUserByToken};

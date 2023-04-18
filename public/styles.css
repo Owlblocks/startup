@@ -20,6 +20,12 @@ main {
     flex-direction: row;
 }
 
+.column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 .profile {
     display: flex;
     flex-direction: row;
@@ -98,4 +104,9 @@ main {
 .login {
     display: grid;
     grid-template-columns: auto auto;
+}
+
+.scroll {
+    overflow-y: auto;
+    max-height: "200px";
 }

@@ -70,7 +70,7 @@ apiRouter.post('/auth/logout', (_req, res) => {
 });
 
 apiRouter.get('/auth/ping', async (req, res) => {
-    console.log('ping');
+    // console.log('ping');
     authToken = req.cookies[authCookieName];
     const user = await DB.getUserByToken(authToken);
     if(user) {
@@ -99,14 +99,20 @@ apiRouter.get('/gif/:id', async (_req, res) => {
 apiRouter.post('/user/:username/addfriend/:friendname', async (req, res) => {
     let username = req.params.username;
     let friendname = req.params.friendname;
+    // console.log(friendname);
     DB.addFriend(username, friendname);
-    DB.addFriend(friendname, username);
+    DB.getUser(username).then((res2) => {
+        // console.log(res2);
+        // console.log(username);
+        res.send(res2.friends);
+    });
 });
 
 apiRouter.post('/user/:username/pin/:friendname', async (req, res) => {
     let username = req.params.username;
     let friendname = req.params.friendname;
     DB.pinFriend(username, friendname);
+    res.send('pinned');
 });
 
 apiRouter.post('/user/:username/togglefavorite/:gif', async (req, res) => {
@@ -116,11 +122,22 @@ apiRouter.post('/user/:username/togglefavorite/:gif', async (req, res) => {
     res.status(200).send(ret);
 })
 
+function scrubUser(user) {
+    let {_id, passwordHash, token, ...scrubbed} = user;
+    return scrubbed;
+}
+
+apiRouter.post('/user/search', async (req, res) => {
+    let searchResults = (await DB.searchUsers(req.body.searchString)).map(scrubUser);
+    // console.log(searchResults);
+    res.send(searchResults);
+})
+
 const secureApiRouter = express.Router();
 apiRouter.use(secureApiRouter);
 
 secureApiRouter.use(async (req, res, next) => {
-    console.log('sec');
+    // console.log('sec');
     authToken = req.cookies[authCookieName];
     const user = await DB.getUserByToken(authToken);
     if(user) {
@@ -134,8 +151,8 @@ secureApiRouter.use(async (req, res, next) => {
 
 secureApiRouter.get('/user/:username', async (_req, res) => {
     let name = _req.params.username;
-    let str = await DB.getUser(name);
-    res.send(str);
+    let user = await DB.getUser(name);
+    res.send(scrubUser(user));
 });
 /*
 app.use(async (req, res) => {
