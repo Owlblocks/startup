@@ -47,6 +47,15 @@ Simon WebSocket:
 - Apparently, while a web socket server requires a node package, the WebSocket class itself is accessible without any imports, as it was used in play.js out of the box. Apparently the api itself is important enough that Javascript comes packaged with it.
 - Most of the websocket creation-type code happens at the server level, and then the use is at the client level.
 
+Simon React:
+- Due to Node's library functions, it seems developing with Bootstrap is easier with React, as there are actual libraries and functions to look at, but that might just be because VSCode gives more insight into javascript libraries than it does with CSS frameworks (if it's able to give insights into the latter at all).
+- It seems that some of React's modularity, specifically the elimination of redundant code through a single HTML page, could be mimicked by populating a single HTML page dynamically using Javascript and the DOM. I assume this basically does that, but more automatically and conveniently.
+- Overall, using classes (functions) to create modular components is much more intuitive to my brain than regular HTML and Javascript. I'm not sure if that's due to my programming experience, or just native intuition.
+- This is more of a sidenote, but I once followed along a guided programming project that used klass to name a class and avoid a keyword rather than something like className. Granted, the former wouldn't be properly described by "className" but klass could also be confusing to those that weren't following along.
+- React would have probably simplified my startup's solution for requiring authentication to do anything. I had to redirect any page to the login screen if not authenticated, rather than not displaying them in the first place unless you logged in.
+- using && short-circuiting for hiding components (I think that's what you're doing) is a bit confusing, although it really helped to understand subconsciously what JSX files are being read as.
+- Overall, the structure of the application feels more familiar as a programmer
+
 Startup:
 - Authentication is incredibly confusing, although very important.
 - Passwords should always be hashed when stored (I knew this before, but it never hurts to be reminded of this one)
