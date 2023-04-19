@@ -34,10 +34,20 @@ function addSearchResult(user) {
         return;
     }
     let div = document.createElement('div');
+    let avatar = document.createElement('img');
     let label = document.createElement('label');
     let add = document.createElement('button');
+    div.appendChild(avatar);
     div.appendChild(label);
     div.appendChild(add);
+    if(user.avatar) {
+        avatar.src = `/data/avatars/${user.avatar}`;
+    }
+    else {
+        avatar.src = 'account.png';
+    }
+    avatar.length = 30;
+    avatar.height = 30;
     label.textContent = user.username;
     add.textContent = '[Add]';
     add.classList.add('btn');

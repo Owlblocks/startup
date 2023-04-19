@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const storage = multer.diskStorage({
+const gifStorage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './data/gifs/')
     },
@@ -8,7 +8,16 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + '.gif')
     }
 });
-const gifUpload = multer({storage: storage});
+const pngStorage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './data/avatars/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, req.body.username + '.png');
+    }
+});
+const gifUpload = multer({storage: gifStorage});
+const pngUpload = multer({storage: pngStorage});
 const cors = require('cors');
 //const uuid = require('uuid');
 const app = express();
@@ -88,6 +97,14 @@ apiRouter.post('/upload/gif', gifUpload.single('gif'), function(req, res, next) 
 //    console.log(`${filename}, ${username}`);
     const gif = DB.addGIF(username, filename);
     res.send(gif);
+    next();
+});
+
+apiRouter.post('/upload/avatar', pngUpload.single('avatar'), function(req, res, next) {
+    let filename = req.file.filename;
+    let username = req.body.username;
+    DB.setAvatar(username, filename);
+    res.send({filename: filename});
     next();
 });
 

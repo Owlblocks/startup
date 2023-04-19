@@ -82,4 +82,8 @@ async function searchUsers(searchString) {
   return results.toArray();
 }
 
-module.exports = {getUser, addGIF, addFriend, togglePin, searchUsers, toggleFavorite, registerAccount, getUserByToken};
+function setAvatar(username, avatar) {
+  userCollection.updateOne({ username: username }, { $set: { 'avatar': avatar }});
+}
+
+module.exports = {getUser, addGIF, addFriend, togglePin, searchUsers, setAvatar, toggleFavorite, registerAccount, getUserByToken};

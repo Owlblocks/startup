@@ -59,7 +59,8 @@ class Data {
         elem.classList.add('nav-item');
         let avatar = document.createElement('img');
         avatar.style.height = '30px';
-        avatar.src = 'account.png';
+        avatar.onerror = () => { avatar.src = 'account.png' };
+        avatar.src = `/data/avatars/${name}.png`;
         elem.appendChild(avatar);
         let link = document.createElement('a');
         link.classList.add('secondary-link');
@@ -76,7 +77,8 @@ class Data {
         elem.classList.add('nav-item');
         let avatar = document.createElement('img');
         avatar.style.height = '30px';
-        avatar.src = 'account.png';
+        avatar.onerror = () => { avatar.src = 'account.png' };
+        avatar.src = `/data/avatars/${name}.png`;
         elem.appendChild(avatar);
         let pinButton = document.createElement('button');
         pinButton.onclick = function() {data.togglePin(elem)};
@@ -93,6 +95,8 @@ class Data {
         elem.appendChild(link);
 
         this.friends.set(elem, name);
+
+        
 
         return elem;
     }
@@ -202,6 +206,7 @@ redirect().then(() => {
     }
     let userGifs = document.getElementById('userpage');
     let friendList = document.getElementById('friend-list');
+    let avatarImg = document.getElementById('avatar');
 
     fetch(`/api/user/${data.username}`, {
         method: 'GET'
@@ -210,6 +215,11 @@ redirect().then(() => {
         json.friends ??= [];
         json.pinned ??= [];
         json.favorites ??= [];
+
+        if(json.avatar) {
+            avatarImg.src = `/data/avatars/${json.avatar}`;
+        }
+
         if(friendList) {
             for(const friend of json.friends) {
                 friendList.appendChild(data.createFriendElem(friend, json.pinned.includes(friend)));

@@ -14,7 +14,7 @@
     <body class="bg-light text-dark">
         <header class="container-fluid">
             <div class="profile">
-                <img src="account.png" />
+                <img id="avatar" src="account.png" />
                 <div class="profile-inner">
                     <h2 id="username">Username</h2>
                     <a class="secondary-link" href="account.html">My Account</a>
@@ -47,11 +47,27 @@
                 </menu>
             </nav>
         </header>
-        <main class="container">
+        <main class="column">
             <div class="option">
                 <button id="logout-btn" class="btn btn-baobab">
                     Logout
                 </button>
+            </div>
+            <hr />
+            <div class="option">
+                <h4>Avatar:</h4>
+                <div class="option">
+                    <input type="file" id="fileinput" name="filename" accept="image/png" />
+                </div>
+                <div class="option">
+                    <label>Preview:</label>
+                    <img id="preview"/>
+                </div>
+                <div class="option">
+                    <button id="upload" class="btn btn-baobab" disabled="true">
+                        Upload
+                    </button>
+                </div>
             </div>
         </main>
 
