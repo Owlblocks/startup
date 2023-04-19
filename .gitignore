@@ -1,4 +1,5 @@
 sample/
 deployFiles.sh
+deployService.sh
 node_modules/
 data/
