@@ -110,3 +110,18 @@ main {
     overflow-y: auto;
     max-height: "200px";
 }
+
+h1 {
+    color: darkgreen;
+    font-weight: bold !important;
+}
+
+h5 {
+    color: darkgreen;
+    font-weight: bold !important;
+}
+
+p {
+    color: brown;
+    font-weight: normal;
+}
