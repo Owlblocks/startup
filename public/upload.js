@@ -20,7 +20,7 @@ const maxSize = 2097152;
 function onFileChanged(event) {
     file = event.srcElement.files[0];
     if(file.size > maxSize) {
-        alert(`Max file size: ${2097152} bytes`);
+        alert(`Max file size: ${maxSize} bytes`);
         file = {};
         return;
     }
