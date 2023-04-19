@@ -42,6 +42,11 @@ Simon Login:
 - I learned a bit how cookies work.
 - I figured out that I need to decide whether my Startup service will have a single Users collection, with account info and user info, or if I should separate a user's favorites and uploaded gifs (not the gifs themselves) from their password hash and token.
 
+Simon WebSocket:
+- web sockets require code in both the client and server, as it's a two-way package.
+- Apparently, while a web socket server requires a node package, the WebSocket class itself is accessible without any imports, as it was used in play.js out of the box. Apparently the api itself is important enough that Javascript comes packaged with it.
+- Most of the websocket creation-type code happens at the server level, and then the use is at the client level.
+
 Startup:
 - Authentication is incredibly confusing, although very important.
 - Passwords should always be hashed when stored (I knew this before, but it never hurts to be reminded of this one)
